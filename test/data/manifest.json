@@ -1,0 +1,53 @@
+{
+	"sequence": [
+		{
+			"name": "data01",
+			"desription": "Simple frame",
+			"@type": "PositiveEntailment",
+			"premise": "data01-premise.ttl",
+			"query": "data01-query.ttl"
+		}, {
+			"name": "data02",
+			"desription": "Simple atom",
+			"@type": "PositiveEntailment",
+			"premise": "data02-premise.ttl",
+			"query": "data02-query.ttl"
+		}, {
+			"name": "data03",
+			"desription": "Ordered Atom",
+			"@type": "PositiveEntailment",
+			"premise": "data03-premise.ttl",
+			"query": "data03-query.ttl"
+		}, {
+			"name": "data04",
+			"desription": "Order in Atoms matter",
+			"@type": "NegativeEntailment",
+			"premise": "data04-premise.ttl",
+			"query": "data04-query.ttl"
+		}, {
+			"name": "data05",
+			"desription": "Local Constant can never be found",
+			"@type": "NegativeEntailment",
+			"premise": "data05-premise.ttl",
+			"query": "data05-query.ttl"
+		}, {
+			"name": "data06",
+			"desription": "Flat List",
+			"@type": "PositiveEntailment",
+			"premise": "data06-premise.ttl",
+			"query": "data06-query.ttl"
+		}, {
+			"name": "data07",
+			"desription": "Nested List",
+			"@type": "PositiveEntailment",
+			"premise": "data07-premise.ttl",
+			"query": "data07-query.ttl"
+		}, {
+			"name": "data08",
+			"desription": "Exists can find local values",
+			"@type": "PositiveEntailment",
+			"premise": "data08-premise.ttl",
+			"query": "data08-query.ttl"
+		}
+	]
+}

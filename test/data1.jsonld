@@ -1,0 +1,74 @@
+[
+  {
+    "@id": "_:N96e79850fdba4f6bb730752b0272451a",
+    "@type": [
+      "http://www.w3.org/2007/rif#Frame"
+    ],
+    "http://www.w3.org/2007/rif#object": [
+      {
+        "@id": "_:N42e7ba5c63224ec88b3f9d67adda55ee"
+      }
+    ],
+    "http://www.w3.org/2007/rif#slots": [
+      {
+        "@list": [
+          {
+            "@id": "_:Nb2ae9d3df54844788f84a5ab721e021c"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:Nb2ae9d3df54844788f84a5ab721e021c",
+    "@type": [
+      "http://www.w3.org/2007/rif#Slot"
+    ],
+    "http://www.w3.org/2007/rif#slotkey": [
+      {
+        "@id": "_:N63af72e3a40a4335b31be576904e2653"
+      }
+    ],
+    "http://www.w3.org/2007/rif#slotvalue": [
+      {
+        "@id": "_:N5dc714b1755a401ca7f83d3ced1be753"
+      }
+    ]
+  },
+  {
+    "@id": "_:N63af72e3a40a4335b31be576904e2653",
+    "@type": [
+      "http://www.w3.org/2007/rif#Const"
+    ],
+    "http://www.w3.org/2007/rif#constIRI": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "http://example.org/example#test"
+      }
+    ]
+  },
+  {
+    "@id": "_:N5dc714b1755a401ca7f83d3ced1be753",
+    "@type": [
+      "http://www.w3.org/2007/rif#Const"
+    ],
+    "http://www.w3.org/2007/rif#value": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@value": "some value"
+      }
+    ]
+  },
+  {
+    "@id": "_:N42e7ba5c63224ec88b3f9d67adda55ee",
+    "@type": [
+      "http://www.w3.org/2007/rif#Const"
+    ],
+    "http://www.w3.org/2007/rif#constIRI": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "http://example.org/example#John"
+      }
+    ]
+  }
+]

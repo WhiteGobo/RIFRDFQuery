@@ -1,0 +1,13 @@
+@prefix ns1: <http://www.w3.org/2007/rif#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a ns1:Frame ;
+    ns1:object [ a ns1:Const ;
+            ns1:constIRI "http://example.org/example#John"^^xsd:anyURI ] ;
+    ns1:slots ( [ a ns1:Slot ;
+                ns1:slotkey [ a ns1:Const ;
+                        ns1:constIRI "http://example.org/example#test"^^xsd:anyURI ] ;
+                ns1:slotvalue [ a ns1:Const ;
+                        ns1:value "some value"^^xsd:string ] ] ) .
+

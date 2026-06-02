@@ -1,0 +1,18 @@
+[package]
+name = "RIFRDFQuery"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+oxigraph = {
+	version = "0.5.8",
+	default-features = false,
+	#features = ["rocksdb"],
+}
+spargebra = "0.4.6"
+oxrdfio = "0.2.5"
+oxrdf = "0.3.3"
+oxsdatatypes = "0.2.2"
