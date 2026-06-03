@@ -66,6 +66,42 @@
 			"@type": "NegativeEntailment",
 			"premise": "data11-premise.ttl",
 			"query": "data11-query.ttl"
+		}, {
+			"name": "data12",
+			"desription": "Support for datatype.",
+			"@type": "PositiveEntailment",
+			"premise": "data12-premise.ttl",
+			"query": "data12-query.ttl"
+		}, {
+			"name": "data13",
+			"desription": "Check for datatype in premise.",
+			"@type": "NegativeEntailment",
+			"premise": "data13-premise.ttl",
+			"query": "data13-query.ttl"
+		}, {
+			"name": "data14",
+			"desription": "Check for datatype in query.",
+			"@type": "NegativeEntailment",
+			"premise": "data14-premise.ttl",
+			"query": "data14-query.ttl"
+		}, {
+			"name": "data15",
+			"desription": "Support for lang tag.",
+			"@type": "PositiveEntailment",
+			"premise": "data15-premise.ttl",
+			"query": "data15-query.ttl"
+		}, {
+			"name": "data16",
+			"desription": "Check for lang tag in premise.",
+			"@type": "NegativeEntailment",
+			"premise": "data16-premise.ttl",
+			"query": "data16-query.ttl"
+		}, {
+			"name": "data17",
+			"desription": "Check for lang tag in query.",
+			"@type": "NegativeEntailment",
+			"premise": "data17-premise.ttl",
+			"query": "data17-query.ttl"
 		}
 	]
 }
