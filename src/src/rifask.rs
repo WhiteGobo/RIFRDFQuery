@@ -111,17 +111,28 @@ impl MyQuery {
         let atomnode = self.new_var("atom");
         let opnode = self.new_var("op");
         let mut argnames = Vec::new();
-        for node in atom.args.iter() {
-            argnames.push(self.new_var("arg"));
-        }
-        let mut ret = format!("\t{} rif:op {};\n\t\trif:args ({}).\n",
-                                atomnode, opnode, argnames.join(" "));
-        ret += &self.generate_termcheck(&opnode, &atom.op);
+        if atom.args.is_empty(){
+            let filternode = self.new_var("args");
+            let mut ret = format!("\t{} rif:op {}.\n",
+                                    atomnode, opnode);
+            ret += format!("\tOPTIONAL {{{} rif:args {}}}\n", atomnode, filternode).as_ref();
 
-        for (rname, rnode) in zip(argnames.iter(), atom.args.iter()) {
-            ret += &self.generate_termcheck(rname, rnode);
+            ret += format!("\tFILTER(!bound({}) || ({} = rdf:nil))\n", filternode, filternode).as_ref();
+            ret += &self.generate_termcheck(&opnode, &atom.op);
+            return Ok(ret);
+        } else {
+            for node in atom.args.iter() {
+                argnames.push(self.new_var("arg"));
+            }
+            let mut ret = format!("\t{} rif:op {};\n\t\trif:args ({}).\n",
+                                    atomnode, opnode, argnames.join(" "));
+            ret += &self.generate_termcheck(&opnode, &atom.op);
+
+            for (rname, rnode) in zip(argnames.iter(), atom.args.iter()) {
+                ret += &self.generate_termcheck(rname, rnode);
+            }
+            return Ok(ret);
         }
-        return Ok(ret);
     }
 
     fn generate_querypart_exists(&mut self, exists: &Exists

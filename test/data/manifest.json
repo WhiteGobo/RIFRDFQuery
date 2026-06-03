@@ -48,6 +48,24 @@
 			"@type": "PositiveEntailment",
 			"premise": "data08-premise.ttl",
 			"query": "data08-query.ttl"
+		}, {
+			"name": "data09",
+			"desription": "Frames in premise with duplicate object.",
+			"@type": "PositiveEntailment",
+			"premise": "data09-premise.ttl",
+			"query": "data09-query.ttl"
+		}, {
+			"name": "data10",
+			"desription": "Atoms might omit args if no term exists.",
+			"@type": "PositiveEntailment",
+			"premise": "data10-premise.ttl",
+			"query": "data10-query.ttl"
+		}, {
+			"name": "data11",
+			"desription": "When args are ommited in query, atoms with existing args shouldnt be found.",
+			"@type": "NegativeEntailment",
+			"premise": "data11-premise.ttl",
+			"query": "data11-query.ttl"
 		}
 	]
 }

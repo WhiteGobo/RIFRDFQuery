@@ -132,6 +132,7 @@ impl Atom {
     ) -> Option<Self>
     {
         use oxigraph::model::{NamedOrBlankNodeRef, NamedOrBlankNode};
+        use oxigraph::model::vocab::rdf;
         let tmp_t = NamedOrBlankNode::try_from(term).ok()?;
 
         let t = Some(tmp_t.as_ref());
@@ -143,15 +144,15 @@ impl Atom {
             q.ok()?.object
         };
         let args = {
-            let q = match graph.quads_for_pattern(t, Some(rif::ARGS), None, None).next(){
-                Some(x) => x,
-                None => {
-                    eprintln!("atom expected but no rif:args");
-                    return None;
+            match graph.quads_for_pattern(t, Some(rif::ARGS), None, None).next(){
+                Some(x) => {
+                    let args_term = x.ok()?.object;
+                    NamedOrBlankNode::try_from(args_term).ok()?
                 },
-            };
-            let args_term = q.ok()?.object;
-            NamedOrBlankNode::try_from(args_term).ok()?
+                None => {
+                    NamedOrBlankNode::from(rdf::NIL)
+                },
+            }
         };
         let ret_op = match MyTerm::retrieve(graph, op){
             Some(x) => x,
