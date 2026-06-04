@@ -102,6 +102,12 @@
 			"@type": "NegativeEntailment",
 			"premise": "data17-premise.ttl",
 			"query": "data17-query.ttl"
+		}, {
+			"name": "data18",
+			"desription": "Exists works with single frame",
+			"@type": "PositiveEntailment",
+			"premise": "data18-premise.ttl",
+			"query": "data18-query.ttl"
 		}
 	]
 }

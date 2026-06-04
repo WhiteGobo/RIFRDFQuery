@@ -175,6 +175,36 @@ impl Atom {
     }
 }
 
+fn rdflist_to_vec2(graph: &Store, root: NamedOrBlankNodeRef) -> Option<Vec<Term>> {
+    use oxigraph::model::vocab::rdf;
+    let mut ret = Vec::new();
+    let mut tmp: NamedOrBlankNode = root.into();
+    let rdf_nil: NamedOrBlankNode = rdf::NIL.into();
+    while tmp != rdf_nil {
+        let s: Option<NamedOrBlankNodeRef> = Some(tmp.as_ref());
+        let first = match graph.quads_for_pattern(s, Some(rdf::FIRST), None, None).next(){
+            Some(x) => match x {
+                Ok(x) => x.object,
+                Err(_) => {return None;},
+            },
+            None => {return None;},
+        };
+        ret.push(first);
+        let rest = match graph.quads_for_pattern(s, Some(rdf::REST), None, None).next(){
+            Some(x) => match x {
+                Ok(x) => match NamedOrBlankNode::try_from(x.object) {
+                    Ok(x) => x,
+                    Err(_) => {return None;},
+                }
+                Err(_) => {return None;},
+            },
+            None => {return None;},
+        };
+        tmp = rest;
+    }
+    Some(ret)
+}
+
 fn rdflist_to_vec(graph: &Store, root: NamedOrBlankNodeRef) -> Option<Vec<MyTerm>> {
     use oxigraph::model::vocab::rdf;
     let mut ret1 = Vec::new();
@@ -280,15 +310,30 @@ impl FormulaType {
         }
         let mut ret = Vec::new();
         match (op, args, object, slots) {
-            (Some(x), Some(y), None, None) => {
+            (Some(_), _, None, None) => {
                 ret.push(FormulaType::Atom(root.into()));
             },
-            (None, None, Some(x), Some(y)) => {
-                eprintln!("retrieve FormulaType for frame not implemented");
-                return None;
+            (None, None, Some(_), Some(slotrdflist)) => {
+                match rdflist_to_vec2(graph, slotrdflist.as_ref()) {
+                    None => {
+                        eprintln!("Slots couldnt be translated as list.");
+                        return None;
+                    }
+                    Some(l) => {
+                        for slot in l {
+                            ret.push(FormulaType::Frame(root.into(), slot));
+                        }
+                    }
+                }
+                //eprintln!("retrieve FormulaType for frame not implemented");
+                //return None;
             },
-            _ => {eprintln!("qwer");return None;},
+            _ => {eprintln!("Expected formula but didnt find one");return None;},
         };
+        if ret.len() == 0 {
+            eprintln!("Failed to get formulas with FormulaType::retrieve.");
+            return None;
+        }
         Some(ret)
     }
 
