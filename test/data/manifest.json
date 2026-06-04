@@ -108,6 +108,30 @@
 			"@type": "PositiveEntailment",
 			"premise": "data18-premise.ttl",
 			"query": "data18-query.ttl"
+		}, {
+			"name": "data19",
+			"desription": "Test subclass works",
+			"@type": "PositiveEntailment",
+			"premise": "data19-premise.ttl",
+			"query": "data19-query.ttl"
+		}, {
+			"name": "data20",
+			"desription": "Test subclass fails correctly",
+			"@type": "NegativeEntailment",
+			"premise": "data20-premise.ttl",
+			"query": "data20-query.ttl"
+		}, {
+			"name": "data21",
+			"desription": "Test member works",
+			"@type": "PositiveEntailment",
+			"premise": "data21-premise.ttl",
+			"query": "data21-query.ttl"
+		}, {
+			"name": "data22",
+			"desription": "Test member fails correctly",
+			"@type": "NegativeEntailment",
+			"premise": "data22-premise.ttl",
+			"query": "data22-query.ttl"
 		}
 	]
 }

@@ -1,0 +1,8 @@
+@prefix ns1: <http://www.w3.org/2007/rif#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a ns1:Subclass ;
+    ns1:sub [ a ns1:Const ;
+            ns1:constIRI "http://example.org/example#C"^^xsd:anyURI ] ;
+    ns1:super [ a ns1:Const ;
+            ns1:constIRI "http://example.org/example#D"^^xsd:anyURI ] .
