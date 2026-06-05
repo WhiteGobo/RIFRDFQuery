@@ -1,0 +1,9 @@
+@prefix ns1: <http://www.w3.org/2007/rif#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a ns1:Equal ;
+	ns1:left [ a ns1:Const ;
+		ns1:constIRI "http://example.org/example#A"^^xsd:anyURI ] ;
+	ns1:right [ a ns1:Const ;
+		ns1:constIRI "http://example.org/example#i"^^xsd:anyURI ] .

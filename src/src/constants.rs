@@ -16,5 +16,11 @@ pub mod rif {
     pub const ITEMS: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#items");
     pub const FORMULA: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#formula");
     pub const VARNAME: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#varname");
+    pub const LEFT: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#left");
+    pub const RIGHT: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#right");
+    pub const CLASS: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#class");
+    pub const INSTANCE: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#instance");
+    pub const SUB: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#sub");
+    pub const SUPER: NamedNodeRef = NamedNodeRef::new_unchecked("http://www.w3.org/2007/rif#super");
 
 }

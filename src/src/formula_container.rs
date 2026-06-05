@@ -29,8 +29,29 @@ pub struct Exists {
 }
 
 #[derive(Debug)]
+pub struct Subclass {
+    pub sub: MyTerm,
+    pub super_: MyTerm,
+}
+
+#[derive(Debug)]
+pub struct Member {
+    pub class: MyTerm,
+    pub instance: MyTerm,
+}
+
+#[derive(Debug)]
+pub struct Equal{
+    pub left: MyTerm,
+    pub right: MyTerm,
+}
+
+#[derive(Debug)]
 pub enum Formula {
     Frame(Frame),
     Atom(Atom),
     Exists(Exists),
+    Subclass(Subclass),
+    Member(Member),
+    Equal(Equal),
 }

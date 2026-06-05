@@ -1,5 +1,6 @@
 use oxigraph::store::Store;
-use crate::formula_container::{MyTerm, Frame, Atom, Exists, Formula};
+use crate::formula_container::{MyTerm, Frame, Atom, Exists, Formula, Subclass, Member, Equal};
+use std::io::Error;
 
 const PREFIXES: &str = "
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -80,8 +81,60 @@ impl MyQuery {
 
     }
 
+    fn generate_querypart_subclass(&mut self, subclass: &Subclass
+        ) -> Result<String, Error>
+    {
+        let subclassnode = self.new_var("subclass");
+        let sub_node = self.new_var("sub");
+        let super_node = self.new_var("super");
+        let mut ret = format!("\t{} rif:sub {} ; rif:super {} .\n",
+                                subclassnode, sub_node, super_node);
+        for (name, node) in [
+            (&sub_node, &subclass.sub),
+            (&super_node, &subclass.super_)
+        ] {
+            ret += &self.generate_termcheck(name, node);
+        }
+        return Ok(ret)
+    }
+
+    fn generate_querypart_member(&mut self, member: &Member,
+        ) -> Result<String, Error>
+    {
+        let membernode = self.new_var("member");
+        let instance_node = self.new_var("instance");
+        let class_node = self.new_var("class");
+        let mut ret = format!("\t{} rif:instance {} ; rif:class {} .\n",
+                                membernode, instance_node, class_node);
+        for (name, node) in [
+            (&instance_node, &member.instance),
+            (&class_node, &member.class)
+        ] {
+            ret += &self.generate_termcheck(name, node);
+        }
+        return Ok(ret)
+    }
+
+    fn generate_querypart_equal(&mut self, equal: &Equal,
+        ) -> Result<String, Error>
+    {
+        let membernode = self.new_var("equal");
+        let left_node = self.new_var("left");
+        let right_node = self.new_var("right");
+        let mut ret
+             = format!("\t{} rif:left | rif:right {} ; rif:right | rif:left {} .\n",
+                        membernode, left_node, right_node);
+        for (name, node) in [
+            (&left_node, &equal.left),
+            (&right_node, &equal.right)
+        ] {
+            ret += &self.generate_termcheck(name, node);
+        }
+        return Ok(ret)
+    }
+
     fn generate_querypart_frame(&mut self, frame: &Frame
-        ) -> Result<String, ()>
+        ) -> Result<String, Error>
     {
         let framenode = self.new_var("frame");
         let objectnode = self.new_var("obj");
@@ -105,7 +158,7 @@ impl MyQuery {
     }
 
     fn generate_querypart_atom(&mut self, atom: &Atom
-        ) -> Result<String, ()>
+        ) -> Result<String, Error>
     {
         use std::iter::zip;
         let atomnode = self.new_var("atom");
@@ -136,11 +189,11 @@ impl MyQuery {
     }
 
     fn generate_querypart_exists(&mut self, exists: &Exists
-        ) -> Result<String, ()>
+        ) -> Result<String, Error>
     {
         match self.combine_formulas(&exists.formula) {
             true => Ok("".to_owned()),
-            false => Err(()),
+            false => Err(Error::other("exists")),
         }
     }
 
@@ -151,6 +204,9 @@ impl MyQuery {
                 Formula::Frame(f) => self.generate_querypart_frame(f),
                 Formula::Atom(a) => self.generate_querypart_atom(a),
                 Formula::Exists(x) => self.generate_querypart_exists(x),
+                Formula::Subclass(x) => self.generate_querypart_subclass(x),
+                Formula::Member(x) => self.generate_querypart_member(x),
+                Formula::Equal(x) => self.generate_querypart_equal(x),
             };
             match new {
                 Ok(x) => self.parts.push(x),

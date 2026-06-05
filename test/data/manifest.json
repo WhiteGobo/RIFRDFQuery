@@ -132,6 +132,30 @@
 			"@type": "NegativeEntailment",
 			"premise": "data22-premise.ttl",
 			"query": "data22-query.ttl"
+		}, {
+			"name": "data23",
+			"desription": "Test equal works",
+			"@type": "PositiveEntailment",
+			"premise": "data23-premise.ttl",
+			"query": "data23-query.ttl"
+		}, {
+			"name": "data24",
+			"desription": "Test equal fails correctly",
+			"@type": "NegativeEntailment",
+			"premise": "data24-premise.ttl",
+			"query": "data24-query.ttl"
+		}, {
+			"name": "data25",
+			"desription": "Test equal works with swapped sides",
+			"@type": "PositiveEntailment",
+			"premise": "data25-premise.ttl",
+			"query": "data25-query.ttl"
+		}, {
+			"name": "data26",
+			"desription": "Test equal works doesnt count left or right double",
+			"@type": "NegativeEntailment",
+			"premise": "data26-premise.ttl",
+			"query": "data26-query.ttl"
 		}
 	]
 }

@@ -2,13 +2,16 @@ use oxigraph::store::Store;
 use oxigraph::sparql::{QuerySolution};
 use oxigraph::model::{Term, NamedOrBlankNodeRef, NamedOrBlankNode, NamedNodeRef};
 use crate::constants::rif;
-use crate::formula_container::{MyTerm, Frame, Atom, Exists, Formula};
+use crate::formula_container::{MyTerm, Frame, Atom, Exists, Formula, Subclass, Member, Equal};
 use crate::rifask::rifask;
 
 
 enum FormulaType {
     Frame(Term, Term),
     Atom(Term),
+    Subclass(Term),
+    Member(Term),
+    Equal(Term),
     Exists(Term),
 }
 
@@ -85,7 +88,108 @@ impl Formula {
             ft::Exists(n) => {
                 Self::Exists(Exists::retrieve(graph, n)?)
             },
-            _ => {return None;},
+            ft::Subclass(n) => {
+                Self::Subclass(Subclass::retrieve(graph, n)?)
+            },
+            ft::Member(n) => {
+                Self::Member(Member::retrieve(graph, n)?)
+            },
+            ft::Equal(n) => {
+                Self::Equal(Equal::retrieve(graph, n)?)
+            },
+        })
+    }
+}
+
+impl Subclass {
+    fn retrieve(
+        graph: &Store, root: Term,
+    ) -> Option<Self>
+    {
+        let subclass = NamedOrBlankNode::try_from(root).ok()?;
+        let sub = match graph.quads_for_pattern(Some(subclass.as_ref()), Some(rif::SUB), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let super_ = match graph.quads_for_pattern(Some(subclass.as_ref()), Some(rif::SUPER), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let ret_sub = match MyTerm::retrieve(graph, sub){
+            Some(x) => x,
+            None => {eprintln!("Missing sub"); return None;}
+        };
+        let ret_super = match MyTerm::retrieve(graph, super_){
+            Some(x) => x,
+            None => {eprintln!("Missing sub"); return None;}
+        };
+        Some(Subclass{
+            sub: ret_sub,
+            super_: ret_super,
+        })
+    }
+}
+
+impl Member {
+    fn retrieve(
+        graph: &Store, root: Term,
+    ) -> Option<Self>
+    {
+        let member = NamedOrBlankNode::try_from(root).ok()?;
+        let c = match graph.quads_for_pattern(Some(member.as_ref()), Some(rif::CLASS), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let i = match graph.quads_for_pattern(Some(member.as_ref()), Some(rif::INSTANCE), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let ret_class = match MyTerm::retrieve(graph, c){
+            Some(x) => x,
+            None => {eprintln!("Missing class"); return None;}
+        };
+        let ret_instance = match MyTerm::retrieve(graph, i){
+            Some(x) => x,
+            None => {eprintln!("Missing instance"); return None;}
+        };
+        Some(Member{
+            class: ret_class,
+            instance: ret_instance,
+        })
+    }
+}
+
+impl Equal {
+    fn retrieve(
+        graph: &Store, root: Term,
+    ) -> Option<Self>
+    {
+        let equal = NamedOrBlankNode::try_from(root).ok()?;
+        let l = match graph.quads_for_pattern(Some(equal.as_ref()), Some(rif::LEFT), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let r = match graph.quads_for_pattern(Some(equal.as_ref()), Some(rif::RIGHT), None, None).next()?
+        {
+            Ok(x) => x.object,
+            Err(_) => {return None;},
+        };
+        let ret_left = match MyTerm::retrieve(graph, l){
+            Some(x) => x,
+            None => {eprintln!("Missing left"); return None;}
+        };
+        let ret_right = match MyTerm::retrieve(graph, r){
+            Some(x) => x,
+            None => {eprintln!("Missing right"); return None;}
+        };
+        Some(Equal{
+            left: ret_left,
+            right: ret_right,
         })
     }
 }
@@ -338,7 +442,7 @@ impl FormulaType {
     }
 
     pub fn from_solution(solution: QuerySolution, typekey: &str, nodekey: &str, suffixkey: &str) -> Option<Self> {
-        use crate::rifquery::FormulaType::{Frame, Atom, Exists};
+        use crate::rifquery::FormulaType::{Frame, Atom, Exists, Subclass, Member, Equal};
         use oxsdatatypes::Integer;
         let t: &Term = solution.get(typekey)?;
         let id: String = match t {
@@ -360,6 +464,9 @@ impl FormulaType {
             }
             "<http://www.w3.org/2007/rif#Atom>" => Some(Atom(node)),
             "<http://www.w3.org/2007/rif#Exists>" => Some(Exists(node)),
+            "<http://www.w3.org/2007/rif#Subclass>" => Some(Subclass(node)),
+            "<http://www.w3.org/2007/rif#Member>" => Some(Member(node)),
+            "<http://www.w3.org/2007/rif#Equal>" => Some(Equal(node)),
             _ => {eprintln!("internal error: {}", id); return None;},
         }
     }
@@ -390,7 +497,7 @@ PREFIX rif: <http://www.w3.org/2007/rif#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?formula ?t ?slot WHERE {
     ?formula a ?t .
-    FILTER( ?t IN (rif:Frame, rif:Atom, rif:Exists))
+    FILTER( ?t IN (rif:Frame, rif:Atom, rif:Exists, rif:Subclass, rif:Member, rif:Equal))
     FILTER Not Exists {
         ?x ?y ?formula .
     }
