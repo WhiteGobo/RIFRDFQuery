@@ -9,6 +9,14 @@ pub extern "C" fn RIFRDFQuery_Graph_query_rif_data(
     query_graph: *mut Store,
     ) -> i8
 {
+    if data_graph.is_null() {
+        eprintln!("RIFRDFQuery_Graph_query_rif_data got NULL as  data_graph");
+        return 2;
+    }
+    if query_graph.is_null() {
+        eprintln!("RIFRDFQuery_Graph_query_rif_data got NULL as query_graph");
+        return 3;
+    }
     let dgraph: &Store = unsafe{&(*data_graph)};
     let qgraph: &Store = unsafe{&(*query_graph)};
     if rifquery(dgraph, qgraph){
