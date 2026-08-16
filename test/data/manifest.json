@@ -4,158 +4,159 @@
 			"name": "data01",
 			"desription": "Simple frame",
 			"@type": "PositiveEntailment",
-			"premise": "data01-premise.ttl",
-			"query": "data01-query.ttl"
+			"premise": "data01-premise.rifps",
+			"query": "data01-query.rifps"
 		}, {
 			"name": "data02",
 			"desription": "Simple atom",
 			"@type": "PositiveEntailment",
-			"premise": "data02-premise.ttl",
-			"query": "data02-query.ttl"
+			"premise": "data02-premise.rifps",
+			"query": "data02-query.rifps"
 		}, {
 			"name": "data03",
 			"desription": "Ordered Atom",
 			"@type": "PositiveEntailment",
-			"premise": "data03-premise.ttl",
-			"query": "data03-query.ttl"
+			"premise": "data03-premise.rifps",
+			"query": "data03-query.rifps"
 		}, {
 			"name": "data04",
 			"desription": "Order in Atoms matter",
 			"@type": "NegativeEntailment",
-			"premise": "data04-premise.ttl",
-			"query": "data04-query.ttl"
+			"premise": "data04-premise.rifps",
+			"query": "data04-query.rifps"
 		}, {
 			"name": "data05",
 			"desription": "Local Constant can never be found",
 			"@type": "NegativeEntailment",
-			"premise": "data05-premise.ttl",
-			"query": "data05-query.ttl"
+			"premise": "data05-premise.rifps",
+			"query": "data05-query.rifps"
 		}, {
 			"name": "data06",
 			"desription": "Flat List",
 			"@type": "PositiveEntailment",
-			"premise": "data06-premise.ttl",
-			"query": "data06-query.ttl"
+			"premise": "data06-premise.rifps",
+			"query": "data06-query.rifps"
 		}, {
 			"name": "data07",
 			"desription": "Nested List",
 			"@type": "PositiveEntailment",
-			"premise": "data07-premise.ttl",
-			"query": "data07-query.ttl"
+			"premise": "data07-premise.rifps",
+			"query": "data07-query.rifps"
 		}, {
 			"name": "data08",
 			"desription": "Exists can find local values",
 			"@type": "PositiveEntailment",
-			"premise": "data08-premise.ttl",
-			"query": "data08-query.ttl"
+			"premise": "data08-premise.rifps",
+			"query": "data08-query.rifps"
 		}, {
 			"name": "data09",
 			"desription": "Frames in premise with duplicate object.",
 			"@type": "PositiveEntailment",
-			"premise": "data09-premise.ttl",
-			"query": "data09-query.ttl"
+			"premise": "data09-premise.rifps",
+			"query": "data09-query.rifps"
 		}, {
 			"name": "data10",
 			"desription": "Atoms might omit args if no term exists.",
+			"todo": "This test makes only sense if data is described not in rifps but in another RDF format. rifps always omits rif:args when args is empty.",
 			"@type": "PositiveEntailment",
-			"premise": "data10-premise.ttl",
-			"query": "data10-query.ttl"
+			"premise": "data10-premise.rifps",
+			"query": "data10-query.rifps"
 		}, {
 			"name": "data11",
 			"desription": "When args are ommited in query, atoms with existing args shouldnt be found.",
 			"@type": "NegativeEntailment",
-			"premise": "data11-premise.ttl",
-			"query": "data11-query.ttl"
+			"premise": "data11-premise.rifps",
+			"query": "data11-query.rifps"
 		}, {
 			"name": "data12",
 			"desription": "Support for datatype.",
 			"@type": "PositiveEntailment",
-			"premise": "data12-premise.ttl",
-			"query": "data12-query.ttl"
+			"premise": "data12-premise.rifps",
+			"query": "data12-query.rifps"
 		}, {
 			"name": "data13",
 			"desription": "Check for datatype in premise.",
 			"@type": "NegativeEntailment",
-			"premise": "data13-premise.ttl",
-			"query": "data13-query.ttl"
+			"premise": "data13-premise.rifps",
+			"query": "data13-query.rifps"
 		}, {
 			"name": "data14",
 			"desription": "Check for datatype in query.",
 			"@type": "NegativeEntailment",
-			"premise": "data14-premise.ttl",
-			"query": "data14-query.ttl"
+			"premise": "data14-premise.rifps",
+			"query": "data14-query.rifps"
 		}, {
 			"name": "data15",
 			"desription": "Support for lang tag.",
 			"@type": "PositiveEntailment",
-			"premise": "data15-premise.ttl",
-			"query": "data15-query.ttl"
+			"premise": "data15-premise.rifps",
+			"query": "data15-query.rifps"
 		}, {
 			"name": "data16",
 			"desription": "Check for lang tag in premise.",
 			"@type": "NegativeEntailment",
-			"premise": "data16-premise.ttl",
-			"query": "data16-query.ttl"
+			"premise": "data16-premise.rifps",
+			"query": "data16-query.rifps"
 		}, {
 			"name": "data17",
 			"desription": "Check for lang tag in query.",
 			"@type": "NegativeEntailment",
-			"premise": "data17-premise.ttl",
-			"query": "data17-query.ttl"
+			"premise": "data17-premise.rifps",
+			"query": "data17-query.rifps"
 		}, {
 			"name": "data18",
 			"desription": "Exists works with single frame",
 			"@type": "PositiveEntailment",
-			"premise": "data18-premise.ttl",
-			"query": "data18-query.ttl"
+			"premise": "data18-premise.rifps",
+			"query": "data18-query.rifps"
 		}, {
 			"name": "data19",
 			"desription": "Test subclass works",
 			"@type": "PositiveEntailment",
-			"premise": "data19-premise.ttl",
-			"query": "data19-query.ttl"
+			"premise": "data19-premise.rifps",
+			"query": "data19-query.rifps"
 		}, {
 			"name": "data20",
 			"desription": "Test subclass fails correctly",
 			"@type": "NegativeEntailment",
-			"premise": "data20-premise.ttl",
-			"query": "data20-query.ttl"
+			"premise": "data20-premise.rifps",
+			"query": "data20-query.rifps"
 		}, {
 			"name": "data21",
 			"desription": "Test member works",
 			"@type": "PositiveEntailment",
-			"premise": "data21-premise.ttl",
-			"query": "data21-query.ttl"
+			"premise": "data21-premise.rifps",
+			"query": "data21-query.rifps"
 		}, {
 			"name": "data22",
 			"desription": "Test member fails correctly",
 			"@type": "NegativeEntailment",
-			"premise": "data22-premise.ttl",
-			"query": "data22-query.ttl"
+			"premise": "data22-premise.rifps",
+			"query": "data22-query.rifps"
 		}, {
 			"name": "data23",
 			"desription": "Test equal works",
 			"@type": "PositiveEntailment",
-			"premise": "data23-premise.ttl",
-			"query": "data23-query.ttl"
+			"premise": "data23-premise.rifps",
+			"query": "data23-query.rifps"
 		}, {
 			"name": "data24",
 			"desription": "Test equal fails correctly",
 			"@type": "NegativeEntailment",
-			"premise": "data24-premise.ttl",
-			"query": "data24-query.ttl"
+			"premise": "data24-premise.rifps",
+			"query": "data24-query.rifps"
 		}, {
 			"name": "data25",
 			"desription": "Test equal works with swapped sides",
 			"@type": "PositiveEntailment",
-			"premise": "data25-premise.ttl",
-			"query": "data25-query.ttl"
+			"premise": "data25-premise.rifps",
+			"query": "data25-query.rifps"
 		}, {
 			"name": "data26",
 			"desription": "Test equal works doesnt count left or right double",
 			"@type": "NegativeEntailment",
-			"premise": "data26-premise.ttl",
-			"query": "data26-query.ttl"
+			"premise": "data26-premise.rifps",
+			"query": "data26-query.rifps"
 		}
 	]
 }

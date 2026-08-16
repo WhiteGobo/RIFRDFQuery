@@ -1,0 +1,3 @@
+Exists ?x (
+  <http://example.com/p>(?z)
+)

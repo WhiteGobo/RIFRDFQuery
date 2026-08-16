@@ -1,0 +1,4 @@
+<http://example.org/#John>[
+  <http://example.org/#status> -> "unknown"
+  <http://example.org/#discount> -> "0"
+  ]

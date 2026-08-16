@@ -1,0 +1,14 @@
+@prefix ns1: <http://www.w3.org/2007/rif#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a ns1:Exists ;
+	ns1:formula [
+		a ns1:Atom ;
+		ns1:args ( [ a ns1:Var ; ns1:varname "z" ] ) ;
+		ns1:op [
+			a ns1:Const ;
+			ns1:constIRI "http://example.org/#p"^^xsd:anyURI
+		]
+	] ;
+	ns1:vars ( [ a ns1:Var ; ns1:varname "z" ] ) . 

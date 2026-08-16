@@ -2,23 +2,27 @@ use std::ptr;
 use std::ffi::{c_char, CStr};
 use oxigraph::store::Store;
 use crate::rifquery::rifquery;
+use crate::rifrdfQueryGraph::RIFRDFQueryGraph;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn RIFRDFQuery_Graph_query_rif_data(
-    data_graph: *mut Store,
-    query_graph: *mut Store,
+    data_graph: *mut RIFRDFQueryGraph,
+    query_graph: *mut RIFRDFQueryGraph,
     ) -> i8
 {
     if data_graph.is_null() {
         eprintln!("RIFRDFQuery_Graph_query_rif_data got NULL as  data_graph");
-        return 2;
+        return -2;
     }
     if query_graph.is_null() {
         eprintln!("RIFRDFQuery_Graph_query_rif_data got NULL as query_graph");
-        return 3;
+        return -3;
     }
-    let dgraph: &Store = unsafe{&(*data_graph)};
-    let qgraph: &Store = unsafe{&(*query_graph)};
+    let dgraph: &Store = unsafe{&(*data_graph).store};
+    let qgraph: &Store = unsafe{&(*query_graph).store};
+    //TODO: This will produce an error output, on local values but will still
+    //return as expected a normal 1 as for not found.
+    //This is strange and should be overthought.
     if rifquery(dgraph, qgraph){
         return 0;
     } else {
@@ -27,10 +31,62 @@ pub extern "C" fn RIFRDFQuery_Graph_query_rif_data(
 }
 
 #[unsafe(no_mangle)]
+pub extern "C" fn RIFRDFQuery_Graph_new() -> *mut RIFRDFQueryGraph
+{
+    use oxrdfio::{RdfFormat, RdfParser, ReaderQuadParser};
+    use oxrdf::Quad;
+    use oxigraph::store::{Store};
+    let store = match Store::new() {
+        Ok(x) => x,
+        Err(e) => {
+            eprintln!("Internal RIFRDFQuery Error. Init of store failed {}", e);
+            return ptr::null_mut();
+        },
+    };
+    let mybox = Box::new(RIFRDFQueryGraph::new(store));
+    Box::into_raw(mybox)
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn RIFRDFQuery_Graph_add(
+        subject: *const c_char, subject_type: u8,
+        predicate: *const c_char,
+        object: *const c_char, object_suffix: *const c_char,
+        object_type: u8,
+        _graph_id: *const c_char, _graph_type: u8,
+        graph: *mut RIFRDFQueryGraph,
+        ) -> i64
+{
+    use oxrdf::{Quad, GraphName};
+    use crate::c2rust_triple::BNodeMap; //Make translate_ctriple available
+    if graph.is_null() {return -1;}
+    unsafe {
+        let (s, p, o) = match (*graph).translate_ctriple(
+                                        subject, subject_type, predicate,
+                                        object, object_suffix, object_type)
+        {
+            Ok(x) => x,
+            Err(_) =>{
+                eprintln!("Couldnt translate quad in RIFRDFQueryGraph_add");
+                return -2;
+            }
+        };
+        let quad = Quad::new(s, p, o, GraphName::DefaultGraph);
+        match (*graph).store.insert(&quad) {
+            Ok(_) => {return 0;},
+            Err(_) => {
+                eprintln!("Couldnt add quad to store of RIFRDFQueryGraph");
+                return -3;
+            }
+        }
+    }
+}
+
+#[unsafe(no_mangle)]
 pub extern "C" fn RIFRDFQ_Graph_from_data(
     cdata: *const c_char,
     cmedia_type: *const c_char,
-    ) -> *mut Store
+    ) -> *mut RIFRDFQueryGraph
 {
     use oxrdfio::{RdfFormat, RdfParser, ReaderQuadParser};
     use oxrdf::Quad;
@@ -75,12 +131,12 @@ pub extern "C" fn RIFRDFQ_Graph_from_data(
             },
         }
     }
-    let mybox = Box::new(store);
+    let mybox = Box::new(RIFRDFQueryGraph::new(store));
     Box::into_raw(mybox)
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn free_RIFRDFQuery_Graph(store: *mut Store){
+pub extern "C" fn free_RIFRDFQuery_Graph(store: *mut RIFRDFQueryGraph){
     unsafe{
         let _ = Box::from_raw(store);
     }

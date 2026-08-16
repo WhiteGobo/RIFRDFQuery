@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include "RIFRDFQuery.h"
+#include <CInterfaceRIF.h>
 
 const char* datafile = NULL;
 const char* queryfile = NULL;
@@ -9,6 +10,16 @@ bool expect = true;
 
 static int parse_args(int argc, char *argv[]);
 static char* load_into_memory(const char* filepath);
+static RIFRDFQuery_Graph* load_graph_from_rifps(const char* filepath);
+
+static int8_t my_add(
+                const char* subject, uint8_t subject_type,
+                const char* predicate,
+                const char* object, const char* object_suffix,
+                uint8_t object_type,
+                const char* graphid, uint8_t graph_type,
+		void* user);
+
 
 int main(int argc, char *argv[]){
 	int err;
@@ -28,12 +39,14 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "Failed to load queryfile\n");
 		exit(EXIT_FAILURE);
 	}
-	data_graph = RIFRDFQ_Graph_from_data(data, "ttl");
+	//data_graph = RIFRDFQ_Graph_from_data(data, "ttl");
+	data_graph = load_graph_from_rifps(datafile);
 	if (data_graph == NULL){
 		fprintf(stderr, "Failed to produce data graph %s\n", data);
 		exit(EXIT_FAILURE);
 	}
-	query_graph = RIFRDFQ_Graph_from_data(query, "ttl");
+	//query_graph = RIFRDFQ_Graph_from_data(query, "ttl");
+	query_graph = load_graph_from_rifps(queryfile);
 	if (query_graph == NULL){
 		fprintf(stderr, "Failed to produce query graph\n");
 		exit(EXIT_FAILURE);
@@ -53,13 +66,17 @@ int main(int argc, char *argv[]){
 						"expect failure\n");
 				exit(EXIT_FAILURE);
 			}
-		default:
+		case 1:
 			if (expect){
 				fprintf(stderr, "Failed to find expected facts\n");
 				exit(EXIT_FAILURE);
 			} else {
 				exit(EXIT_SUCCESS);
 			}
+		default:
+			fprintf(stderr, "query_rif_data returned "
+					"unexpected error code %d\n", err);
+			exit(EXIT_FAILURE);
 	}
 }
 
@@ -122,4 +139,48 @@ static char* load_into_memory(const char* filepath){
         ret[fsize] = 0;
         fclose(f);
         return ret;
+}
+
+
+static RIFRDFQuery_Graph* load_graph_from_rifps(const char* filepath){
+	int err;
+	char* data;
+	RIFPSParser* rifparser = NULL;
+	RIFRDFQuery_Graph* graph = RIFRDFQuery_Graph_new();
+	if (graph == NULL) {
+		fprintf(stderr, "Failed to initialize RIFRDFQuery_Graph\n");
+		return NULL;
+	}
+	data = load_into_memory(filepath);
+	if (data == NULL) {
+		fprintf(stderr, "Failed to load data from \"%s\"\n", filepath);
+		free_RIFRDFQuery_Graph(graph);
+		return NULL;
+	}
+	err = parse_rifps(data,
+			my_add, graph,
+			//(TripleHandler*) RIFRDFQuery_Graph_add, graph,
+			rifparser);
+	free_RIFPSParser(rifparser);
+	free(data);
+	if (err != 0){
+		fprintf(stderr, "Failed to parse rifps file: %s\n", filepath);
+		free_RIFRDFQuery_Graph(graph);
+		return NULL;
+	}
+	return graph;
+}
+
+static int8_t my_add(
+                const char* subject, uint8_t subject_type,
+                const char* predicate,
+                const char* object, const char* object_suffix,
+                uint8_t object_type,
+                const char* graphid, uint8_t graph_type,
+		void* user)
+{
+	fprintf(stderr, "qq (%s %d) (%s) (%s %s %d)\n",
+			subject, subject_type, predicate, object, object_suffix, object_type
+			);
+	return RIFRDFQuery_Graph_add(subject, subject_type, predicate, object, object_suffix, object_type, graphid, graph_type, user);
 }

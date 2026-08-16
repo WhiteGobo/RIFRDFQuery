@@ -1,0 +1,15 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rif: <http://www.w3.org/2007/rif#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a rif:Atom ;
+    rif:args ( [ a rif:Const ;
+                rif:constname "X" ] ) ;
+    rif:op [ a rif:Const ;
+            rif:constIRI "http://example.com/p"^^xsd:anyURI ] .
+
+[] a rif:Atom ;
+    rif:args ( [ a rif:Const ;
+                rif:constname "Y" ] ) ;
+    rif:op [ a rif:Const ;
+            rif:constIRI "http://example.com/p"^^xsd:anyURI ] .

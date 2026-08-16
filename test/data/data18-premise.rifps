@@ -1,0 +1,4 @@
+_b1[
+  <http://example.org/example#hasName> -> "John"
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> -> <http://example.org/example#named>
+  ]

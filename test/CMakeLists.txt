@@ -1,8 +1,11 @@
+include(CTest)
+
 add_executable(mytest
 	mytest.c
 )
 target_link_libraries(mytest
 	RIFRDFQuery
+	CInterfaceRIF
 )
 
 set(DATAFILE "${CMAKE_CURRENT_SOURCE_DIR}/data1.jsonld")

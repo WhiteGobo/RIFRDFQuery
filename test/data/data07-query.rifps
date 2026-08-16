@@ -1,0 +1,6 @@
+<http://example.org/#p>(
+  List(
+    <http://example.org/#a>
+    List(<http://example.org/#b>)
+  )
+)
