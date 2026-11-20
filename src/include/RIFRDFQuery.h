@@ -29,3 +29,4 @@ int8_t RIFRDFQuery_Graph_add(
                 uint8_t object_type,
                 const char* graphid, uint8_t graph_type,
 		RIFRDFQuery_Graph* user);
+void fprintf_RIFRDFQuery_Graph(FILE*, RIFRDFQuery_Graph*);

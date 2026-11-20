@@ -1,4 +1,4 @@
-mod ffi_c;
+pub mod ffi_c;
 mod rifquery;
 mod rifask;
 mod constants;

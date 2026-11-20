@@ -1,5 +1,5 @@
 use std::ptr;
-use std::ffi::{c_char, CStr};
+use std::ffi::{c_char, CStr, c_void};
 use oxigraph::store::Store;
 use crate::rifquery::rifquery;
 use crate::rifrdfQueryGraph::RIFRDFQueryGraph;
@@ -140,4 +140,18 @@ pub extern "C" fn free_RIFRDFQuery_Graph(store: *mut RIFRDFQueryGraph){
     unsafe{
         let _ = Box::from_raw(store);
     }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn fprintf_RIFRDFQuery_Graph(_f: *mut c_void, store: *mut RIFRDFQueryGraph){
+    eprintln!("RIFRDFQueryGraph(");
+    unsafe{
+        for x in &(*store).store {
+            match x {
+                Ok(quad) => {eprintln!("{}", quad);},
+                Err(_e) => {},
+            }
+        }
+    }
+    eprintln!(")");
 }
